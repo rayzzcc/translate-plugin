@@ -1,0 +1,169 @@
+/* ===== 双语翻译助手：注入网页的译文样式 ===== */
+tp-trans {
+  display: inline;
+  font: inherit;
+  font-size: calc(1em * var(--tp-scale, 1));
+  line-height: inherit;
+  color: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+tp-trans.tp-block {
+  display: block;
+  margin: 0.35em 0 0.15em;
+}
+tp-trans.tp-inline {
+  margin-left: 0.5em;
+}
+tp-trans tp-inner {
+  white-space: pre-line;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* 主题 */
+tp-trans.tp-theme-dashed tp-inner {
+  text-decoration: underline dashed var(--tp-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+}
+tp-trans.tp-theme-dotted tp-inner {
+  text-decoration: underline dotted var(--tp-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+}
+tp-trans.tp-theme-wavy tp-inner {
+  text-decoration: underline wavy var(--tp-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+tp-trans.tp-theme-highlight tp-inner {
+  background: var(--tp-bg);
+  border-radius: 3px;
+  padding: 0 0.15em;
+}
+tp-trans.tp-theme-marker tp-inner {
+  background: linear-gradient(transparent 55%, var(--tp-bg) 0);
+}
+tp-trans.tp-theme-italic tp-inner {
+  font-style: italic;
+}
+tp-trans.tp-theme-bold tp-inner {
+  font-weight: 600;
+}
+tp-trans.tp-theme-weak tp-inner {
+  opacity: 0.65;
+}
+tp-trans.tp-theme-blur tp-inner {
+  filter: blur(4px);
+  transition: filter 0.2s;
+}
+tp-trans.tp-theme-blur:hover tp-inner {
+  filter: none;
+}
+tp-trans.tp-theme-quote.tp-block {
+  border-left: 3px solid var(--tp-accent);
+  padding-left: 0.6em;
+}
+tp-trans.tp-theme-card.tp-block {
+  background: var(--tp-bg);
+  border-radius: 6px;
+  padding: 0.35em 0.6em;
+}
+tp-trans.tp-theme-card.tp-inline tp-inner {
+  background: var(--tp-bg);
+  border-radius: 4px;
+  padding: 0 0.3em;
+}
+
+/* 仅译文模式：去掉装饰 */
+tp-trans.tp-only {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+tp-trans.tp-only tp-inner {
+  text-decoration: none;
+  background: none;
+  filter: none;
+  opacity: 1;
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+/* 加载与错误 */
+tp-trans.tp-loading {
+  display: inline;
+  margin-left: 0.35em;
+}
+tp-spin {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border: 2px solid var(--tp-accent, #6b8afd);
+  border-right-color: transparent;
+  border-radius: 50%;
+  vertical-align: -0.08em;
+  opacity: 0.75;
+  animation: tp-rotate 0.8s linear infinite;
+}
+@keyframes tp-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+tp-err {
+  color: #e5484d;
+  cursor: pointer;
+  font-size: 0.85em;
+  text-decoration: underline dotted;
+}
+
+/* ===== YouTube 双语字幕 ===== */
+html.tp-yt-active .ytp-caption-window-container {
+  display: none !important;
+}
+.tp-yt-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 64px;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transition: bottom 0.2s;
+}
+.html5-video-player.ytp-autohide .tp-yt-overlay {
+  bottom: 28px;
+}
+.tp-yt-overlay.tp-yt-fallback {
+  bottom: 22%;
+}
+.tp-yt-box {
+  max-width: 82%;
+  text-align: center;
+  background: rgba(8, 8, 8, 0.72);
+  border-radius: 6px;
+  padding: 0.2em 0.6em;
+  line-height: 1.38;
+  pointer-events: auto;
+  font-family: 'YouTube Noto', Roboto, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+.tp-yt-box:empty {
+  display: none;
+}
+.tp-yt-orig {
+  color: #fff;
+}
+.tp-yt-tr {
+  color: #ffd75e;
+}
+.tp-yt-wait {
+  color: rgba(255, 255, 255, 0.5);
+}
