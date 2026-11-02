@@ -12,12 +12,13 @@
 | 悬浮球 | 点击翻译/还原，悬停显示菜单，可拖动，可按网站隐藏 |
 | 悬停翻译 | 鼠标放在段落上**轻按 Ctrl** 翻译该段，再按一次还原；按住 Ctrl 移动鼠标可连续翻译 |
 | 划词翻译 | 选中文字后点击「译」图标（或设为直接翻译），卡片内可切换目标语言、复制、重译 |
+| 阅读助手 | 选中不懂的英文后点击旁边的悬浮球或按 **Alt+D**，结合选文和文章内容解释；支持流式回答、内容解释、多轮追问、拖动缩放和折叠保留对话 |
 | 输入框翻译 | 在输入框里**快速连按 3 次空格**，把内容翻译成英文（可设置），支持 Ctrl+Z 撤销 |
 | 图片解读 | 悬停图片点击「✨ 解读」，或右键「讲解 / 翻译此图片」。**讲解**模式结合网页标题、图片说明和前后文，流式输出解读与总结，并可继续追问；**文字翻译**模式逐条翻译图中文字 |
 | YouTube 双语字幕 | 开启字幕（CC）后自动显示双语字幕 |
 | PDF 双语阅读器 | 左侧原文页面、右侧逐段译文；支持在线 PDF、本地文件、拖拽打开 |
 | 网站 / 语言规则 | 总是翻译 / 永不翻译某些网站或某些语言的网页 |
-| 快捷键与右键菜单 | Alt+A 翻译页面，Alt+W 切换模式，Alt+S 翻译选中文字 |
+| 快捷键与右键菜单 | Alt+A 翻译页面，Alt+W 切换模式，Alt+S 翻译选中文字，Alt+D 打开阅读助手 |
 | 缓存 | 翻译结果存在 IndexedDB，同样的文本不会重复请求 |
 | 备份 | 设置导入 / 导出 / 恢复默认 |
 
@@ -84,7 +85,8 @@ npm run build        # 首次会自动生成 config.jsonc
   "rules": { "alwaysSites": [], "neverSites": [], "alwaysLangs": [], "neverLangs": [] },
   "floatBall": { "enabled": true, "disabledSites": [], "side": "right", "top": 62 },
   "hover": { "enabled": true, "key": "Control" },          // Control | Alt | Shift | Meta
-  "selection": { "enabled": true, "trigger": "icon" },     // icon | auto
+  "selection": { "enabled": true, "trigger": "icon" },
+  "assistant": { "enabled": true, "remember": true },     // icon | auto
   "input": { "enabled": true, "targetLang": "en", "triggerCount": 3 },
   "image": { "enabled": true, "hoverButton": true, "minSize": 160, "mode": "explain" },   // explain | translate
   "video": { "enabled": true, "showOriginal": true, "fontScale": 1 },

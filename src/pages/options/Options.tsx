@@ -381,6 +381,14 @@ function Interact({ bundle, update }: Props) {
           />
         </Row>
       </Section>
+      <Section title="阅读助手" desc="选中不懂的英文后点击「问 AI」或按 Alt+D，结合文章内容进行解释和多轮追问">
+        <Row label="启用阅读助手" desc="不会默认弹出，仅在主动打开时显示">
+          <Switch checked={s.assistant.enabled} onChange={(v) => update({ assistant: { enabled: v } })} />
+        </Row>
+        <Row label="收起后保留对话" desc="在当前标签页保留最近 20 条消息，关闭窗口会清除对话">
+          <Switch checked={s.assistant.remember} onChange={(v) => update({ assistant: { remember: v } })} />
+        </Row>
+      </Section>
       <Section title="输入框翻译" desc="在输入框中快速连按空格，把已输入内容翻译成指定语言（支持撤销 Ctrl+Z）">
         <Row label="启用输入框翻译">
           <Switch checked={s.input.enabled} onChange={(v) => update({ input: { enabled: v } })} />

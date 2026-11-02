@@ -48,17 +48,29 @@ export function loadingDots() {
   return h('span', { class: 'loading-dots' }, [h('i'), h('i'), h('i')])
 }
 
-/** 让元素可以通过 handle 拖动 */
-export function makeDraggable(el: HTMLElement, handle: HTMLElement) {
+/** 让元素可以通过 handle 拖动；右下角固定的面板使用 bottom/right 定位 */
+export function makeDraggable(
+  el: HTMLElement,
+  handle: HTMLElement,
+  options: { bottomRight?: boolean; width?: number } = {},
+) {
   handle.addEventListener('pointerdown', (e) => {
-    if ((e.target as Element).closest('button,select,input')) return
+    if ((e.target as Element).closest('button,select,input,textarea')) return
     const rect = el.getBoundingClientRect()
     const dx = e.clientX - rect.left
     const dy = e.clientY - rect.top
     handle.setPointerCapture(e.pointerId)
     const move = (ev: PointerEvent) => {
-      el.style.left = `${Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx))}px`
-      el.style.top = `${Math.max(0, Math.min(innerHeight - 30, ev.clientY - dy))}px`
+      if (options.bottomRight) {
+        const width = rect.width || options.width || 380
+        el.style.right = `${Math.max(8, Math.min(innerWidth - 60, innerWidth - ev.clientX - (width - dx)))}px`
+        el.style.bottom = `${Math.max(8, Math.min(innerHeight - 50, innerHeight - ev.clientY - (rect.height - dy)))}px`
+        el.style.left = 'auto'
+        el.style.top = 'auto'
+      } else {
+        el.style.left = `${Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx))}px`
+        el.style.top = `${Math.max(0, Math.min(innerHeight - 30, ev.clientY - dy))}px`
+      }
     }
     const up = () => {
       handle.removeEventListener('pointermove', move)

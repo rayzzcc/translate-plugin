@@ -2,6 +2,7 @@ import { LANGUAGES, langBase } from '../shared/languages'
 import { callBg, friendlyError } from '../shared/messages'
 import { currentProvider, S } from './settings'
 import { fromUi, h, loadingDots, makeDraggable, ui } from './ui/root'
+import { askAboutSelection } from './assistant-bridge'
 import { toast } from './ui/toast'
 
 let icon: HTMLElement | null = null
@@ -18,12 +19,22 @@ export function closeCard() {
   card = null
 }
 
-function selectionInfo(): { text: string; rect: DOMRect } | null {
+function selectionInfo(): { text: string; rect: DOMRect; endRect: DOMRect } | null {
   const sel = getSelection()
   let text = sel?.toString().trim() ?? ''
   let rect: DOMRect | null = null
+  let endRect: DOMRect | null = null
   if (text && sel && sel.rangeCount) {
-    rect = sel.getRangeAt(0).getBoundingClientRect()
+    const range = sel.getRangeAt(0)
+    rect = range.getBoundingClientRect()
+    // getBoundingClientRect 包含整个多行选区，不能直接作为末尾位置。
+    // 最后一个 client rect 通常就是选区最后一行；必要时用末尾的折叠 Range 精确定位。
+    const rects = range.getClientRects()
+    endRect = rects.length ? rects[rects.length - 1] : rect
+    const end = range.cloneRange()
+    end.collapse(false)
+    const caret = end.getBoundingClientRect()
+    if (caret.width === 0 && caret.height > 0) endRect = caret
   }
   // 输入框中的选中文字
   const active = document.activeElement
@@ -32,10 +43,11 @@ function selectionInfo(): { text: string; rect: DOMRect } | null {
     if (s !== null && e !== null && e > s) {
       text = active.value.slice(s, e).trim()
       rect = active.getBoundingClientRect()
+      endRect = rect
     }
   }
-  if (!text || !rect || (!rect.width && !rect.height)) return text ? { text, rect: new DOMRect(innerWidth / 2 - 190, 120, 0, 0) } : null
-  return { text, rect }
+  if (!text || !rect || (!rect.width && !rect.height)) return text ? { text, rect: new DOMRect(innerWidth / 2 - 190, 120, 0, 0), endRect: new DOMRect(innerWidth / 2, 120, 0, 0) } : null
+  return { text, rect, endRect: endRect || rect }
 }
 
 function place(el: HTMLElement, rect: DOMRect, w: number, hgt: number) {
@@ -137,11 +149,22 @@ export function initSelection() {
           return
         }
         closeIcon()
-        icon = h('div', { class: 'sel-icon', title: '翻译选中文字（Alt+S）' }, '译')
-        icon.style.left = `${Math.min(e.clientX + 8, innerWidth - 36)}px`
-        icon.style.top = `${Math.min(e.clientY + 10, innerHeight - 36)}px`
+        icon = h('div', { class: 'sel-icon' }, [
+          h('div', { class: 'sel-actions' }, [
+            S().assistant.enabled ? h('button', { class: 'sel-ask', title: '解释这段内容（Alt+D）' }, '✦') : null,
+            h('button', { class: 'sel-translate', title: '翻译选中文字（Alt+S）' }, '译'),
+          ]),
+        ])
+        const anchor = { x: info.rect.x, y: info.rect.y, width: info.rect.width, height: info.rect.height }
+        // 以最后一行文字末尾为锚点，而不是整个选区的 right/bottom。
+        icon.style.left = `${Math.max(8, Math.min(info.endRect.right + 10, innerWidth - 74))}px`
+        icon.style.top = `${Math.max(8, Math.min(info.endRect.bottom + 6, innerHeight - 38))}px`
         icon.addEventListener('mousedown', (ev) => ev.preventDefault())
-        icon.addEventListener('click', () => showSelectionCard(info.text, info.rect))
+        icon.querySelector('.sel-translate')?.addEventListener('click', () => showSelectionCard(info.text, info.rect))
+        icon.querySelector('.sel-ask')?.addEventListener('click', () => {
+          closeIcon()
+          askAboutSelection(anchor)
+        })
         ui().appendChild(icon)
       }, 10)
     },
