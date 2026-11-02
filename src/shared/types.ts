@@ -79,6 +79,7 @@ export interface Settings {
   }
   hover: { enabled: boolean; key: HoverKey }
   selection: { enabled: boolean; trigger: 'icon' | 'auto' }
+  assistant: { enabled: boolean; remember: boolean }
   input: { enabled: boolean; targetLang: string; triggerCount: number }
   image: {
     enabled: boolean
@@ -131,6 +132,30 @@ export interface SettingsBundle {
 }
 
 export type Scene = 'page' | 'selection' | 'hover' | 'input' | 'subtitle' | 'pdf' | 'test'
+
+/** 选区的屏幕位置，对话窗口据此避开原文 */
+export interface SelectionAnchor {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+/** 阅读助手的文章与选中文本上下文 */
+export interface ReadingContext {
+  pageTitle: string
+  url: string
+  heading?: string
+  selection?: string
+  paragraph?: string
+  before?: string
+  after?: string
+}
+
+export interface ReadingTurn {
+  role: 'user' | 'assistant'
+  content: string
+}
 
 export interface ImageTextItem {
   src: string

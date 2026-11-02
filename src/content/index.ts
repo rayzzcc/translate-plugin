@@ -3,6 +3,7 @@ import type { TabMessage } from '../shared/messages'
 import { buildDynamicCss } from '../shared/style'
 import type { PageState } from '../shared/types'
 import { hostMatches } from '../shared/utils'
+import { initAssistant } from './assistant'
 import { setUserExclude } from './dom'
 import { FloatBall } from './float-ball'
 import { initHover } from './hover'
@@ -47,6 +48,7 @@ async function main() {
   await initSettings()
   const isPdf = isPdfDocument()
   const pt = new PageTranslator()
+  const assistant = isTop ? initAssistant() : null
 
   chrome.runtime.onMessage.addListener((msg: TabMessage, _sender, sendResponse) => {
     switch (msg.type) {
@@ -78,6 +80,9 @@ async function main() {
       case 'translate-image':
         translateImageBySrc(msg.srcUrl)
         return
+      case 'open-assistant':
+        if (isTop) assistant?.openWithSelection(msg.anchor)
+        return
     }
   })
 
@@ -100,6 +105,7 @@ async function main() {
     setUserExclude(S().advanced.excludeSelectors)
     pt.refreshStyle()
     ball?.sync()
+    assistant?.sync()
   })
 
   void maybeAutoTranslate(pt)

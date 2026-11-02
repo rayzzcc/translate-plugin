@@ -26,6 +26,7 @@ export const DEFAULT_SETTINGS: Settings = {
   },
   hover: { enabled: true, key: 'Control' },
   selection: { enabled: true, trigger: 'icon' },
+  assistant: { enabled: true, remember: true },
   input: { enabled: true, targetLang: 'en', triggerCount: 3 },
   image: { enabled: true, providerId: '', hoverButton: true, minSize: 160, mode: 'explain' },
   video: { enabled: true, showOriginal: true, fontScale: 1 },

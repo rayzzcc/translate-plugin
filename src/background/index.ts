@@ -1,9 +1,10 @@
-import { IMAGE_PORT, type BgRequest, type TabMessage } from '../shared/messages'
+import { IMAGE_PORT, READING_PORT, type BgRequest, type TabMessage } from '../shared/messages'
 import type { DisplayMode, PageState } from '../shared/types'
 import { errMsg } from '../shared/utils'
 import { cacheClear, cacheCount } from './cache'
 import { getBundle, getEffective, loadConfig, setUserSettings, updateUserSettings } from './config'
 import { handleImagePort, translateImage } from './image'
+import { handleReadingPort } from './reading'
 import { testProvider, translateTexts } from './translator'
 
 const pdfViewerUrl = (file?: string) =>
@@ -88,6 +89,7 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === 'toggle-translate') await toggleTranslate(tabId)
   else if (command === 'toggle-mode') await toggleMode(tabId)
   else if (command === 'translate-selection') await sendTab(tabId, { type: 'translate-selection' })
+  else if (command === 'open-assistant') await sendTab(tabId, { type: 'open-assistant' })
 })
 
 // ---------------- 消息路由 ----------------
@@ -145,6 +147,7 @@ chrome.runtime.onMessage.addListener((msg: BgRequest, sender, sendResponse) => {
 
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name === IMAGE_PORT) handleImagePort(port)
+  else if (port.name === READING_PORT) handleReadingPort(port)
 })
 
 // 预热配置，尽早暴露配置错误

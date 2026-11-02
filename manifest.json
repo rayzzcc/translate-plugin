@@ -55,6 +55,10 @@
     "translate-selection": {
       "suggested_key": { "default": "Alt+S" },
       "description": "翻译选中的文字"
+    },
+    "open-assistant": {
+      "suggested_key": { "default": "Alt+D" },
+      "description": "打开阅读助手，解释选中文字或文章内容"
     }
   },
   "web_accessible_resources": [

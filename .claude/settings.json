@@ -10,7 +10,15 @@
       "Bash(npx esbuild *)",
       "Bash(node -e ' *)",
       "Bash(node --check dist/background.js)",
-      "Bash(node --check dist/content.js)"
+      "Bash(node --check dist/content.js)",
+      "Bash(curl -s \"https://api.github.com/users/rayzzcc/repos?per_page=100\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([r['name'] for r in d] if isinstance\\(d,list\\) else d\\)\")",
+      "Read(//home/mi/**)",
+      "Bash(env)",
+      "Bash(git ls-tree *)",
+      "Bash(git check-ignore *)",
+      "Bash(git grep *)",
+      "Bash(sed -E 's/\\(\"apiKey\"[[:space:]]*:[[:space:]]*\"\\).*\\(\"\\)/\\\\1[REDACTED]\\\\2/')"
     ]
   }
 }

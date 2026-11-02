@@ -47,9 +47,11 @@ export class FloatBall {
       void updateSettings({ floatBall: { disabledSites: list } })
       toast('已在此网站隐藏悬浮球，可在设置中恢复', 'info', 4000)
     })
+    const assistantBtn = h('button', { title: '阅读助手：解释选中文字或文章内容（Alt+D）' }, '✦')
+    assistantBtn.addEventListener('click', () => broadcast({ type: 'open-assistant' }))
     const optBtn = h('button', { title: '打开设置' }, '⚙')
     optBtn.addEventListener('click', () => void callBg({ type: 'openOptions' }).catch(() => {}))
-    const menu = h('div', { class: 'menu' }, [this.modeBtn, optBtn, hideBtn])
+    const menu = h('div', { class: 'menu' }, [this.modeBtn, assistantBtn, optBtn, hideBtn])
 
     this.wrap = h('div', { class: 'ball-wrap right' }, [ball, menu])
     this.ball = ball

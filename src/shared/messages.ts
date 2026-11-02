@@ -1,4 +1,4 @@
-import type { DeepPartial, DisplayMode, ImageContext, Scene, Settings } from './types'
+import type { DeepPartial, DisplayMode, ImageContext, ReadingContext, ReadingTurn, Scene, SelectionAnchor, Settings } from './types'
 
 /** 发给 background 的消息 */
 export type BgRequest =
@@ -32,6 +32,19 @@ export type TabMessage =
   | { type: 'set-mode'; mode: DisplayMode }
   | { type: 'translate-selection'; text?: string }
   | { type: 'translate-image'; srcUrl: string }
+  | { type: 'open-assistant'; anchor?: SelectionAnchor }
+
+/** 阅读助手使用独立长连接，支持流式回答和停止生成 */
+export const READING_PORT = 'reading-assistant'
+
+export type ReadingPortIn =
+  | { type: 'ask'; question: string; context: ReadingContext; history: ReadingTurn[] }
+  | { type: 'stop' }
+
+export type ReadingPortOut =
+  | { type: 'delta'; text: string }
+  | { type: 'done'; text: string; model: string }
+  | { type: 'error'; error: string; partial?: string }
 
 /** 图片讲解使用长连接（chrome.runtime.connect），以便流式返回和追问 */
 export const IMAGE_PORT = 'image-explain'
